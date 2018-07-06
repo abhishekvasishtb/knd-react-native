@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "KND",
+    "icon": "./img/icon.png",
+    "version": "1.0.0",
+    "slug": "knd-react-native",
+    "sdkVersion": "27.0.0",
+    "ios": {
+      "bundleIdentifier": "com.itdhq.knd"
+    },
+    "android": {
+      "package": "com.itdhq.knd"
+    }
+  },
+  "name": "kndnativexpo",
+  "displayName": "KND"
+}
