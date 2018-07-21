@@ -5,6 +5,7 @@ import {
     View,
     Platform,
     ScrollView,
+    NetInfo,
     FlatList,
     TouchableOpacity,
     ToastAndroid,
@@ -15,22 +16,108 @@ import {
 } from 'react-native';
 
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/Entypo';
-import Ionicon from 'react-native-vector-icons/Ionicons';
 import ExpendableRow from './ExpendableRow.js';
 import AppConstants from '../../constants/AppConstants.js';
 
-// import Snackbar from 'react-native-snackbar';
+import { createStore, applyMiddleware } from 'redux';
+import { connect } from 'react-redux';
+import { apiMiddleware, reducer, getRepoDetail } from '../../redux/actions';
+import {checkConnection, checkConnectionAsync, checkConnectionBeta, setReviewResult, setReviewStatus} from '../../lib/Networking';
+
+
+// const store = createStore(reducer, {}, applyMiddleware(apiMiddleware));
+
+// Fetch movie data
+// store.dispatch({type: 'GET_MOVIE_DATA'});
+
+
+const Realm = require('realm');
+
+import BackgroundTask from 'react-native-background-task';
+
+
+// BackgroundTask.define(async () => {
+//     // if (await checkConnectionAsync()) {
+//     // NetInfo.isLoading.
+//     NetInfo.isConnected.fetch().then(async isConnected => {
+//         if (isConnected) {
+//             let results = await AsyncStorage.getAllKeys();
+//             // .then(results => {
+//             let results2 = results.filter((key, value)=> key.includes('resultCheckList:'));
+//             console.log(results2);
+//             for (i=0;i<results2.length;i++) {
+//                 let reviewId = results2[i].split(':')[1];
+//                 let checkList = await AsyncStorage.getItem(results2[i]);
+//                 // .then(checkList => {
+//                 console.log('I am ee' + reviewId+ checkList);
+//                 setReviewResult(reviewId, checkList);
+//                 setReviewStatus(reviewId, "done");
+//                 // });
+//             }
+//             // this.setState({
+//             //     isLoading:false
+//             // });
+//             // this.getReviews();
+//             ToastAndroid.show('Проверки отправлены', ToastAndroid.SHORT);
+//             // });
+//             await AsyncStorage.multiRemove(results2);
+//             console.log('Hello from a background task');
+//
+//             BackgroundTask.finish();
+//         }
+//         else {
+//             console.log('nothing happened');
+//
+//             BackgroundTask.finish();
+//
+//         }
+//
+//         // NetInfo.isConnected.removeEventListener(
+//         //     'connectionChange',
+//         //     this.sendReviews
+//         // );
+//         BackgroundTask.finish();
+//
+//
+//         // console.log('First, is ' + (isConnected ? 'online' : 'offline'));
+//     });
+//
+//     // }
+//     // else {
+//     //     console.log('Nothing happened');
+//     // }
+//
+//
+// });
 
 // import sampleData from "../../constants/sampleData.json";
 import CheckListItems from "./checkListItems";
+import {
+    ReviewSchema,
+    CompanySchema,
+    CarSchema,
+    PersonSchema,
+    realmSaveReviews,
+    realmGetReviews
+} from "../../store/realmStore";
+import base64 from "../../lib/Base64";
 
 // let BASE_URL = "http://10.0.2.2:8080";
 // BASE_URL = "http://knd.itdhq.com";
+//
+// @connect(
+//     state => ({
+//         response: state.resp,
+//         loading: state.loading,
+//     }),
+//     dispatch => ({
+//         refresh: () => dispatch({type: 'GET_MOVIE_DATA'}),
+//     }),
+// )
 
 
-export  default  class TableOneScreen extends React.Component {
+class TableOneScreen extends React.Component {
     constructor(props) {
         super(props);
         if( Platform.OS === 'android' )
@@ -53,49 +140,128 @@ export  default  class TableOneScreen extends React.Component {
             buttonText : 'Click Here To Expand'
 
         };
+        // this.sendReviews = this.sendReviews.bind(this);
     }
 
+    async getCheckLists(){
+        console.log('here '+await checkConnectionAsync());
 
+        let officerId = await AsyncStorage.getItem('userToken');
+        let reviews = await AsyncStorage.getItem("Reviews");
+        let plannedReviews = JSON.parse(reviews).filter(review => review.status=='scheduled');
+        let completedReviews = JSON.parse(reviews).filter(review => review.status=='done');
+
+        for (i=0;i<plannedReviews.length;i++){
+            // console.log(plannedReviews[i].id);
+            let reviewId = plannedReviews[i].id;
+            fetch(AppConstants.BASE_URL +'/api/get/reviewDetails?reviewId='+reviewId)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    AsyncStorage.setItem("CheckListItem:"+reviewId, JSON.stringify(responseJson.reviewType.checkListItems));
+                })
+                .catch((error) =>{
+                    console.log(error);
+                    console.log('wtf is this')
+
+                });
+        }
+
+        for (i=0;i<completedReviews.length;i++){
+            let reviewId = completedReviews[i].id;
+            fetch(AppConstants.BASE_URL +'/api/get/reviewDetails?reviewId='+reviewId)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    AsyncStorage.setItem("CheckListResult:"+reviewId, JSON.stringify(responseJson.reviewResults));
+                })
+                .catch((error) =>{
+                    console.log(error);
+                    console.log('wtf is this')
+                });
+        }
+    };
 
     async getReviews() {
+        console.log('dsfsd '+await checkConnectionAsync());
         let officerId = await  AsyncStorage.getItem('userToken');
         // console.log((BASE_URL))
-        return fetch(AppConstants.BASE_URL+'/api/get/reviewsByOfficer?officerId='+officerId)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                const result = responseJson.content.filter(word => word.status != 'done');
-                this.setState({
-                    isLoading: false,
-                    responseAPI: result,
-                },);
-
+        if (await checkConnectionAsync()) {
+            return fetch(AppConstants.BASE_URL + '/api/get/reviewsByOfficer?officerId=' + officerId)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    AsyncStorage.setItem("Reviews", JSON.stringify(responseJson.content));
+                    let result = responseJson.content.filter(word => word.status == 'scheduled');
+                    this.setState({
+                        isLoading: false,
+                        responseAPI: result,
+                    },);
+                    this.getCheckLists();
+                    // realmSaveReviews(result, 'scheduled');
                     return result;
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+                })
+                .catch(async (error) => {
+                    console.log(error);
+                    // let failResp = [];
+                    // let failResp = await realmGetReviews('scheduled');
+                    let failResp = await AsyncStorage.getItem("Reviews");
+                    // console.log(failResp);
+                    this.setState({
+                        isLoading: false,
+                        isOffline: true,
+                        responseAPI: JSON.parse(failResp).filter(word => word.status == 'scheduled'),
+                    },);
+                    if (this.state.isOffline) {
+                        ToastAndroid.show('Нет доступа к сети', ToastAndroid.SHORT);
+                    }
+                    // console.log("I AM HERE!@@@@!!!");
+                });
+        }
+        else {
+            let failResp = await AsyncStorage.getItem("Reviews");
+            // console.log(failResp);
+            this.setState({
+                isLoading: false,
+                isOffline: true,
+                responseAPI: JSON.parse(failResp).filter(word => word.status == 'scheduled'),
+            },);
+            if (this.state.isOffline) {
+                ToastAndroid.show('Нет доступа к сети', ToastAndroid.SHORT);
+            }
+        }
+
     }
 
-    componentDidMount(){
+    componentDidMount() {
+        // BackgroundTask.schedule();
+        // this.checkStatus();
         this.getReviews();
-        this._navListener1 = this.props.navigation.addListener('didBlur',
-            payload => {
-                this.setState({isLoading:true});
-            }
-        );
-        this._navListener2 = this.props.navigation.addListener('willFocus',
-            payload => {
-                this.getReviews();
-            }
-        );
+        // this.getCheckLists();
+        // this.props.getRepoDetail('relferreira');
+        // this._navListener1 = this.props.navigation.addListener('didBlur',
+        //     payload => {
+        //         this.setState({isLoading: true});
+        //         // NetInfo.isConnected.removeEventListener(
+        //         //     'connectionChange',
+        //         //     this.sendReviews
+        //         // );
+        //     }
+        // );
+        // this._navListener2 = this.props.navigation.addListener('willFocus',
+        //     payload => {
+        //         this.getReviews();
+        //         // NetInfo.isConnected.addEventListener(
+        //         //     'connectionChange',
+        //         //     this.sendReviews
+        //         // );
+        //     }
+        // );
+
     }
 
-
-    componentWillUnmount(){
-        this.setState({isLoading:true});
-        this._navListener1.remove();
-        this._navListener2.remove();
-
+    componentWillUnmount() {
+        this.setState({isLoading: true});
+        // this._navListener1.remove();
+        // this._navListener2.remove();
+        // this.netListener.remove();
     }
 
     async getData() {
@@ -129,6 +295,7 @@ export  default  class TableOneScreen extends React.Component {
         });
         return 0;
     };
+
 
 
 
@@ -166,6 +333,7 @@ export  default  class TableOneScreen extends React.Component {
             </View>);
     };
 
+
     handleOnNavigateBack = () => {
         this.getData();
         // console.log('test');
@@ -197,6 +365,7 @@ export  default  class TableOneScreen extends React.Component {
         </View>
     );
 
+
     renderSeparator = () => {
         return (
             <View
@@ -223,8 +392,11 @@ export  default  class TableOneScreen extends React.Component {
             />
         );
     };
+
 
     render() {
+
+        const { user, loadingProfile } = this.props;
         let emptyComponent = <View style={{flex: 1,
             backgroundColor: 'white',
             alignItems: 'center',
@@ -239,7 +411,36 @@ export  default  class TableOneScreen extends React.Component {
             <Button title={'Обновить'} onPress={() => {this.getReviews()}}/>
         </View>
 
+        if (this.state.isOffline ) {
+            let CustomComponent =  <View><Text>wtf</Text></View>
+        }
+        else {
+            let CustomComponent = <View></View>
+        }
+        let CustomComponent = <View></View>
 
+        function f() {
+            Realm.open({schema: [CarSchema, PersonSchema]})
+                .then(realm => {
+                    // Create Realm objects and write to local storage
+                    // Query Realm for all cars with a high mileage
+                    const cars = realm.objects('Car').filtered('miles > 1000');
+                    // Will return a Results object with our 1 car
+                    console.log(cars.length);
+                     // => 1
+                    // Add another car
+                    // Query results are updated in realtime
+                    cars.length // => 2
+                    // console.log(cars);
+
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+
+
+        // console.log(this.state.responseAPI);
         // if (this.state.responseAPI.length>0)
         // if (!this.state.isLoading)
         if(this.state.isLoading){
@@ -250,6 +451,8 @@ export  default  class TableOneScreen extends React.Component {
                 )
         }
         // console.log();
+
+
         if (this.state.responseAPI.length>0)
         {
             return (
@@ -280,14 +483,27 @@ export  default  class TableOneScreen extends React.Component {
                     }}
                     />
                 </View>
-
-
             );
         }
-        else { return emptyComponent}
+        else {return emptyComponent}
     }
 }
 
+
+
+const mapStateToProps = ({ type, resp}) => ({
+    type,
+    resp
+});
+
+const mapDispatchToProps = {
+    getRepoDetail
+};
+
+
+
+// export  default connect(mapStateToProps, mapDispatchToProps)(TableOneScreen);
+export  default (TableOneScreen);
 
 
 

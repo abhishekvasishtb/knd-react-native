@@ -4,7 +4,7 @@
   "private": true,
   "devDependencies": {
     "babel-preset-react-native-stage-0": "^1.0.1",
-    "jest": "^23.3.0",
+    "jest": "^23.4.1",
     "jest-react-native": "^18.0.0",
     "react-test-renderer": "16.3.1"
   },
@@ -18,9 +18,16 @@
     "preset": "react-native"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "react": "16.3.1",
     "react-native": "~0.55.2",
+    "react-native-background-fetch": "^2.0.8",
+    "react-native-background-task": "^0.2.1",
     "react-native-vector-icons": "^4.6.0",
-    "react-navigation": "^2.5.1"
+    "react-navigation": "^2.6.2",
+    "react-redux": "^5.0.7",
+    "realm": "^2.13.0",
+    "redux": "^4.0.0",
+    "redux-axios-middleware": "^4.0.0"
   }
 }

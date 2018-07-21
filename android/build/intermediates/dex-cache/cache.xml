@@ -12,42 +12,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
-        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-23.0.1_225cfbcb4c7be800056038f5ab42bad0813530d6.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/dtsvetkov/.m2/repository/javax/inject/javax.inject/1/javax.inject-1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="6975da39a7040257bd51d21a231b76c915872d38">
-        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/javax.inject-1_f33498f7b8d7e0451d2766a3f8b3a32c809a47af.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
-        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-23.0.1_7838d2a9d8dcd44de7584b2378cbcef79cc5347f.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/dtsvetkov/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.6.0/69edde9fc4b01c9fd51d25b83428837478c27254/okhttp-3.6.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="69edde9fc4b01c9fd51d25b83428837478c27254">
-        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/okhttp-3.6.0_fb95f6865fb6116ba1b21802eb7a7ad769a49963.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/1.3.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
@@ -66,30 +30,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/libs/internal_impl-23.0.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
-        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/internal_impl-23.0.1_8fd6ce20d06acf42e24d504e7d471342f15910fc.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.facebook.soloader/soloader/0.1.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
         sha1="8f615bca00639150c9eb6175d4b5471193f70794">
         <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.facebook.soloader-soloader-0.1.0_9664cd3afed39cf2a8ffbc65b409a43ec404a1d1.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/1.3.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="48c7f54c2515a2312d3a4481d10c43fbb807f3af">
-        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.facebook.fresco-imagepipeline-1.3.0_8651af27f1237b4e3159e135cd5a2342aed12498.jar" />
     </item>
     <item
         is-multidex="false"
@@ -111,15 +57,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="/home/dtsvetkov/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-urlconnection/3.6.0/3f9b16b774f2c36cfd86dd2053d0b3059531dacc/okhttp-urlconnection-3.6.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="3f9b16b774f2c36cfd86dd2053d0b3059531dacc">
-        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/okhttp-urlconnection-3.6.0_7d652c1c5471af5b2f60b3680a7a797f185a6c22.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/1.3.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
@@ -129,12 +66,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="/home/dtsvetkov/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.0/5871fb60dc68d67da54a663c3fd636a10a532948/jsr305-3.0.0.jar"
+        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/kndnativexpo/realm/unspecified/jars/classes.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
-        sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
-        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/jsr305-3.0.0_780a8716ec36af7afc37b95cada0b18c9e76bd27.jar" />
+        sha1="502dddf371973c11ddb4878177fbcd9abe373bd8">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/kndnativexpo-realm-unspecified_d5a8efba4ef426d9521a52f96398b77b3cfdb6f9.jar" />
     </item>
     <item
         is-multidex="false"
@@ -165,21 +102,21 @@
     </item>
     <item
         is-multidex="false"
-        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp3/1.3.0/jars/classes.jar"
+        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.2.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
-        sha1="c03c08c9934b23c8c09c803345ec51a74119127b">
-        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.facebook.fresco-imagepipeline-okhttp3-1.3.0_16e230502013f320e712e71119844f89e79bfbea.jar" />
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-25.2.0_75d1a49e8fca5daf457f7e3e2d8f2c8145d2f60c.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="/home/dtsvetkov/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/23.0.1/support-annotations-23.0.1.jar"
+        jar="/home/dtsvetkov/.gradle/caches/modules-2/files-2.1/org.nanohttpd/nanohttpd/2.2.0/73a02117620b6cc7683a1ed6ae24c2f36e2a715/nanohttpd-2.2.0.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
-        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
-        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/support-annotations-23.0.1_8797780607889d8709ddf889fbfb3e4772fbb6be.jar" />
+        sha1="073a02117620b6cc7683a1ed6ae24c2f36e2a715">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/nanohttpd-2.2.0_98b837e2811cca07ac9043f51dc58e5729507279.jar" />
     </item>
     <item
         is-multidex="false"
@@ -189,6 +126,159 @@
         revision="23.0.1"
         sha1="37345de2ed2772f385eaeec37a9c2ff0fea99ad7">
         <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.facebook.fresco-fbcore-1.3.0_645ebea9ecda43351156e0349659f8363667479b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/dtsvetkov/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.2.0/support-annotations-25.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="4a5a82a027706397fff621b22fd6fa796e91d7c5">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/support-annotations-25.2.0_33b070237563ca1f3d294c6f76fa25529134dc8e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/kndnativexpo/react-native-vector-icons/unspecified/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="f2cf527de8d0bd35d72088fafea02395ba4a9eec">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/kndnativexpo-react-native-vector-icons-unspecified_dcdfe71b76c81e46b7fe893a6def82bfe6d1186f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.2.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="8fe8a8f77d651982ce5e18f6187dc4daf914ac57">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.android.support-support-fragment-25.2.0_063da83cd4521fc5025f52113d79276d1d7d9ab8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-23.0.1_225cfbcb4c7be800056038f5ab42bad0813530d6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/dtsvetkov/.m2/repository/javax/inject/javax.inject/1/javax.inject-1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="6975da39a7040257bd51d21a231b76c915872d38">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/javax.inject-1_f33498f7b8d7e0451d2766a3f8b3a32c809a47af.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/dtsvetkov/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.6.0/69edde9fc4b01c9fd51d25b83428837478c27254/okhttp-3.6.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="69edde9fc4b01c9fd51d25b83428837478c27254">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/okhttp-3.6.0_fb95f6865fb6116ba1b21802eb7a7ad769a49963.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/kndnativexpo/react-native-background-task/unspecified/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="8542f28ffe9119ce9635c365d2a746e086b21cae">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/kndnativexpo-react-native-background-task-unspecified_64f06e9fb37c10742acbc49c138dd32c65ffc1b8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.2.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="ee394a892dd21c03a528139c1e8d4e0e1264ac84">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.android.support-support-media-compat-25.2.0_ac8aecdae74f42bce378b0a75007577640ca9b52.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/1.3.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="48c7f54c2515a2312d3a4481d10c43fbb807f3af">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.facebook.fresco-imagepipeline-1.3.0_8651af27f1237b4e3159e135cd5a2342aed12498.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/dtsvetkov/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-urlconnection/3.6.0/3f9b16b774f2c36cfd86dd2053d0b3059531dacc/okhttp-urlconnection-3.6.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="3f9b16b774f2c36cfd86dd2053d0b3059531dacc">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/okhttp-urlconnection-3.6.0_7d652c1c5471af5b2f60b3680a7a797f185a6c22.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.2.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="67eb33110dbacb46a48175b08ae0c96761d2c17d">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.android.support-support-compat-25.2.0_513ec6c2d717686bc133efc1d279592acae0d6f8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.evernote/android-job/1.1.11/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="978a742818fa8e1d6a014f26db191b7f72de2880">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.evernote-android-job-1.1.11_99695842d37beff6b2f71b566cacc281f26639a6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/net.vrallev.android/cat/1.0.5/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="c61a0369f93fb7901fde1bdae68fc71de256244c">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/net.vrallev.android-cat-1.0.5_4a64907cf6be76ea35fd642e67684929042150d9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/dtsvetkov/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.0/5871fb60dc68d67da54a663c3fd636a10a532948/jsr305-3.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/jsr305-3.0.0_780a8716ec36af7afc37b95cada0b18c9e76bd27.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.2.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="fa0446a14ed5dd3725047d6399ffea771a564b30">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.android.support-support-core-ui-25.2.0_c0a35b3b4c9f3f599e202e01718413a0786b44b6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp3/1.3.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="c03c08c9934b23c8c09c803345ec51a74119127b">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.facebook.fresco-imagepipeline-okhttp3-1.3.0_16e230502013f320e712e71119844f89e79bfbea.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.2.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="e820b7be8c035dd522da4bc822e8a76c8e27921a">
+        <dex dex="/media/dtsvetkov/My Passport/Projects/kndnative/android/app/build/intermediates/pre-dexed/debug/com.android.support-support-core-utils-25.2.0_e6b3ad045f11613c07af40628c216bba366a4d77.jar" />
     </item>
 
 </items>

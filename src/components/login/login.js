@@ -8,8 +8,11 @@ import Icon from 'react-native-vector-icons/Entypo';
 // import sampleData from "../../constants/sampleData.json";
 import base64 from "../../lib/Base64";
 import AppConstants from '../../constants/AppConstants.js';
+import {CompanySchema, ReviewSchema} from "../../store/realmStore";
 
 
+
+const Realm = require('realm');
 // let BASE_URL = "http://10.0.2.2:8080";
 
 let inspectors = ['Инспектор 1', 'Инспектор 2'];
@@ -31,15 +34,52 @@ export default class App extends React.Component {
     };
 
 
-
-
     handleLoginInput = (text) => {
         this.setState({ LoginBorderColor: 'lightblue', LoginBorderWidth:2 })
     };
 
+
     handlePasswordInput = (text) => {
         this.setState({ PasswordBorderColor: 'lightblue', PasswordBorderWidth:2 })
     };
+
+    fillDataGlobal(officerId) {
+        fetch(AppConstants.BASE_URL+'/api/get/reviewsByOfficer?officerId='+officerId)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                let result = responseJson.content;
+                Realm.open({schema: [CompanySchema, ReviewSchema],
+                    schemaVersion: 3, migration: function(oldRealm, newRealm) {newRealm.deleteAll();}
+                })
+                    .then(realm => {
+                        realm.write(() => {
+                            for (i=0; i<result.length;i++) {
+                                // console.log(result);
+                                const myCar = realm.create('Review', {
+                                    id: result[i].id,
+                                    name: result[i].name,
+                                    company: {id: result[i].id,
+                                        orgname: result[i].company.orgname,
+                                        address: result[i].company.address},
+                                    date: result[i].date,
+                                    status: result[i].status
+                                });
+                                // console.log(myCar.company);
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                // return result;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+
+        return 0;
+    }
 
      async checkLogin(login, password) {
          try {
@@ -80,7 +120,8 @@ export default class App extends React.Component {
 
          }
      }
-     
+
+
     _signInAsync = async () => {
         Keyboard.dismiss();
         let checkLogin = await this.checkLogin(this.state.login, this.state.password);
@@ -92,6 +133,7 @@ export default class App extends React.Component {
             // if (this.state.password=='admin' && this.state.login=='admin') {
             if (checkLogin.status === 200 && checkLogin.officers[0].role === 'Inspector') {
                 await AsyncStorage.setItem('userToken', "" + checkLogin.officers[0].id);
+                this.fillDataGlobal(checkLogin.officers[0].id);
                 this.props.navigation.navigate('App');
             }
 

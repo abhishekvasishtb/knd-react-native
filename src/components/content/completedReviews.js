@@ -11,7 +11,7 @@ import {
     FlatList,
     TouchableOpacity,
     ActivityIndicator,
-    AsyncStorage, LayoutAnimation,
+    AsyncStorage, LayoutAnimation, ToastAndroid,
 } from 'react-native';
 // import { List, ListItem} from 'react-native-elements';
 
@@ -20,19 +20,19 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import ExpendableRow from './ExpendableRow.js';
 // import ExpendableRow from './ExpendableRow.js';
 import  AppConstants from '../../constants/AppConstants.js';
+import {CompanySchema, ReviewSchema} from "../../store/realmStore";
+import {checkConnection, checkConnectionAsync, checkConnectionBeta} from '../../lib/Networking';
+
+const Realm = require('realm');
+
 
 // import Snackbar from 'react-native-snackbar';
-
-
-
 // let BASE_URL = "http://10.0.2.2:8080";
-
 
 export default  class TableTwoScreen extends React.Component {
     constructor(props) {
         super(props);
         // results = this.getResults().then(res => {return res});
-
         this.state = {
             // responseAPI: [],
             checkedKeys: [],
@@ -42,28 +42,97 @@ export default  class TableTwoScreen extends React.Component {
         };
     }
 
+    async getCheckLists(){
+        let officerId = await AsyncStorage.getItem('userToken');
+        let reviews = await AsyncStorage.getItem("Reviews");
+        let plannedReviews = JSON.parse(reviews).filter(review => review.status=='scheduled');
+        let completedReviews = JSON.parse(reviews).filter(review => review.status=='done');
+
+        for (i=0;i<plannedReviews.length;i++){
+            // console.log(plannedReviews[i].id);
+            let reviewId = plannedReviews[i].id;
+            fetch(AppConstants.BASE_URL +'/api/get/reviewDetails?reviewId='+reviewId)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    AsyncStorage.setItem("CheckListItem:"+reviewId, JSON.stringify(responseJson.reviewType.checkListItems));
+                })
+                .catch((error) =>{
+                    console.log(error);
+                    console.log('wtf is this')
+                });
+        }
+
+        for (i=0;i<completedReviews.length;i++){
+            let reviewId = completedReviews[i].id;
+            fetch(AppConstants.BASE_URL +'/api/get/reviewDetails?reviewId='+reviewId)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    AsyncStorage.setItem("CheckListResult:"+reviewId, JSON.stringify(responseJson.reviewResults));
+                })
+                .catch((error) =>{
+                    console.log(error); 1
+                    console.log('wtf is this')
+                });
+        }
+
+    };
+
     async  getReviews() {
         let officerId = await AsyncStorage.getItem('userToken');
-        return fetch(AppConstants.BASE_URL+'/api/get/reviewsByOfficer?officerId='+officerId+'&size=-1')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // console.log(responseJson);
-                const result = responseJson.content.filter(word => word.status =='done');
-                this.setState({
-                    isLoading: false,
-                    responseAPI: result,
-                }, function(){
+        if (await checkConnectionAsync()) {
+            return fetch(AppConstants.BASE_URL + '/api/get/reviewsByOfficer?officerId=' + officerId + '&size=-1')
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    // console.log(responseJson);
+                    AsyncStorage.setItem("Reviews", JSON.stringify(responseJson.content));
 
+                    const result = responseJson.content.filter(word => word.status == 'done');
+                    this.setState({
+                        isLoading: false,
+                        responseAPI: result,
+                    });
+
+                    // return result;
+                })
+                .catch(async (error) => {
+                    console.log('I AM HERE');
+                    let failResp = await AsyncStorage.getItem("Reviews");
+                    // console.log(failResp);
+                    this.setState({
+                        isLoading: false,
+                        isOffline: true,
+                        responseAPI: JSON.parse(failResp).filter(word => word.status == 'done'),
+                    },);
+                    if (this.state.isOffline) {
+                        ToastAndroid.show('Нет доступа к сети', ToastAndroid.SHORT);
+                    }
+                    // console.error(error);
                 });
-                return result;
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        }
+        else {
+            let failResp = await AsyncStorage.getItem("Reviews");
+            // console.log(failResp);
+            this.setState({
+                isLoading: false,
+                isOffline: true,
+                responseAPI: JSON.parse(failResp).filter(word => word.status == 'done'),
+            },);
+            if (this.state.isOffline) {
+                ToastAndroid.show('Нет доступа к сети', ToastAndroid.SHORT);
+            }
+        }
     }
 
     componentDidMount(){
-        this.getReviews()
+        console.log('Component will mount on planned');
+        this.getReviews();
+        // this.getCheckLists();
+    }
+
+    componentWillUnmount(){
+        // console.log('Component will mount');
+        // this.getReviews();
+        // this.getCheckLists();
     }
 
     async getData(){

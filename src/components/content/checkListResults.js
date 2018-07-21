@@ -6,7 +6,7 @@ import {
     FlatList,
     Switch,
     ActivityIndicator,
-    AsyncStorage, LayoutAnimation,
+    AsyncStorage, LayoutAnimation, ToastAndroid,
 } from 'react-native';
 // import { List, ListItem} from 'react-native-elements';
 import sampleData from "../../constants/sampleData.json";
@@ -29,7 +29,7 @@ export  default  class CheckListScreen extends React.Component {
     }
 
 
-    getCheckListResults(){
+    getCheckListResults2(){
         return fetch(AppConstants.BASE_URL +'/api/get/reviewDetails?reviewId='+this.props.navigation.getParam('reviewId', 'NO-ID'))
             .then((response) => response.json())
             .then((responseJson) => {
@@ -43,8 +43,32 @@ export  default  class CheckListScreen extends React.Component {
                 return responseJson.reviewResults;
 
             })
-            .catch((error) =>{
-                console.error(error);
+            .catch(async (error) =>{
+                console.log(error);
+                let checkList = await AsyncStorage.getItem("CheckListResult:"+this.props.navigation.getParam('reviewId', 'NO-ID'));
+                console.log(checkList);
+                this.setState({
+                    isLoading: false,
+                    responseAPI: JSON.parse(checkList),
+                    isOffline: true
+                });
+                if (this.state.isOffline) {
+                    ToastAndroid.show('Нет доступа к сети', ToastAndroid.SHORT);
+                }
+                return checkList;
+
+            });
+    }
+
+    getCheckListResults(){
+        AsyncStorage.getItem("CheckListResult:" + this.props.navigation.getParam('reviewId', 'NO-ID'))
+            .then(checkList => {
+                console.log(checkList);
+                this.setState({
+                    isLoading: false,
+                    responseAPI: JSON.parse(checkList),
+                    // isOffline: true
+                });
             });
     }
 

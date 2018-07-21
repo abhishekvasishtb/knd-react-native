@@ -1,14 +1,34 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button,  Platform,
-    ScrollView, StatusBar, FlatList, TouchableOpacity, Switch, AsyncStorage, ActivityIndicator, Alert, SectionList} from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    TextInput,
+    Button,
+    Platform,
+    ScrollView,
+    StatusBar,
+    FlatList,
+    TouchableOpacity,
+    Switch,
+    AsyncStorage,
+    ActivityIndicator,
+    Alert,
+    NetInfo,
+    SectionList,
+    ToastAndroid
+} from 'react-native';
+
 
 
 import base64 from '../../lib/Base64.js';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/Entypo';
 
+
 import sampleData from "../../constants/sampleData.json";
 import AppConstants from '../../constants/AppConstants.js';
+import {checkConnectionAsync, setReviewStatus, setReviewResult} from "../../lib/Networking";
 
 
 class TestSwitch extends React.Component {
@@ -64,23 +84,69 @@ export default class CheckListItems extends React.Component {
         };
     }
 
-    getCheckList(){
-        return fetch(AppConstants.BASE_URL +'/api/get/reviewDetails?reviewId='+this.props.navigation.getParam('reviewId', 'NO-ID'))
-            .then((response) => response.json())
-            .then((responseJson) => {
 
-                this.setState({
-                    isLoading: false,
-                    responseAPI: responseJson.reviewType.checkListItems,
-                }, function(){
+    async getCheckList2() {
+        // if (await checkConnectionAsync()) {
+            return fetch(AppConstants.BASE_URL + '/api/get/reviewDetails?reviewId=' + this.props.navigation.getParam('reviewId', 'NO-ID'))
+                .then((response) => response.json())
+                .then((responseJson) => {
 
+                    this.setState({
+                        isLoading: false,
+                        responseAPI: responseJson.reviewType.checkListItems,
+                    }, function () {
+
+                    });
+
+                })
+                .catch(async (error) => {
+                    console.log(error);
+                    let checkList = await AsyncStorage.getItem("CheckListItem:" + this.props.navigation.getParam('reviewId', 'NO-ID'));
+                    console.log(checkList);
+                    this.setState({
+                        isLoading: false,
+                        responseAPI: JSON.parse(checkList),
+                        isOffline: true
+                    });
+                    if (this.state.isOffline) {
+                        ToastAndroid.show('Нет доступа к сети', ToastAndroid.SHORT);
+                    }
                 });
-
-            })
-            .catch((error) =>{
-                console.error(error);
-            });
+        // }
+        // else {
+        //     let checkList = await AsyncStorage.getItem("CheckListItem:" + this.props.navigation.getParam('reviewId', 'NO-ID'));
+        //     console.log(checkList);
+        //     this.setState({
+        //         isLoading: false,
+        //         responseAPI: JSON.parse(checkList),
+        //         isOffline: true
+        //     });
+        //     if (this.state.isOffline) {
+        //         ToastAndroid.show('Нет доступа к сети', ToastAndroid.SHORT);
+        //     }
+        //     return checkList
+        // }
     }
+
+
+    getCheckList() {
+                // console.log(error);
+                // let checkList = await
+                    AsyncStorage.getItem("CheckListItem:" + this.props.navigation.getParam('reviewId', 'NO-ID'))
+                        .then(checkList => {
+                            console.log(checkList);
+                            this.setState({
+                                isLoading: false,
+                                responseAPI: JSON.parse(checkList),
+                                // isOffline: true
+                            });
+                        });
+                // if (this.state.isOffline) {
+                //     ToastAndroid.show('Нет доступа к сети', ToastAndroid.SHORT);
+                // }
+
+    }
+
 
 
 
@@ -93,6 +159,7 @@ export default class CheckListItems extends React.Component {
     setReviewResult(reviewId, checkList) {
         let username = 'admin';
         let password = 'admin';
+        console.log(JSON.stringify(checkList));
         return fetch(AppConstants.BASE_URL+'/api/add/checkListResult?reviewId='+reviewId, {
             method: 'POST',
             headers: {
@@ -110,6 +177,7 @@ export default class CheckListItems extends React.Component {
                 console.error(error);
             });
     }
+
 
     setReviewStatus(reviewId, status) {
         let username = 'admin';
@@ -140,7 +208,7 @@ export default class CheckListItems extends React.Component {
     // curl --user admin:admin -i -X POST -d '{"{checkListItemId_1}": "passed", "{checkListItemId_2}": "failed"}'
     // -H "Content-Type:application/json" http://localhost:8080/
 
-    async sendCheckListAPI(item) {
+    async sendCheckListAPI() {
         let value = {};
         let companyId = this.props.navigation.getParam('companyId', 'NO-ID');
         let company = this.props.navigation.getParam('company', 'NO-ID');
@@ -153,19 +221,37 @@ export default class CheckListItems extends React.Component {
             value[this.state.responseAPI[i].id] = switchValue;
         }
 
-        this.setReviewResult(reviewId, value);
-        this.setReviewStatus(reviewId, 'done');
+        // console.log(await NetInfo.isConnected.fetch());
+        if (await NetInfo.isConnected.fetch()) {
 
-        AsyncStorage.setItem('resultCheckList:'+companyId, value.toString());
-        AsyncStorage.setItem('result:'+companyId, company);
+            // this.setReviewResult(reviewId, value);
+            // this.setReviewStatus(reviewId, 'done');
+            setReviewResult(reviewId, value);
+            setReviewStatus(reviewId, 'done');
 
-        await AsyncStorage.removeItem('companyId:'+companyId);
+            AsyncStorage.setItem('result:' + companyId, company);
 
-        this.props.navigation.state.params.onGoBack();
-        this.props.navigation.navigate('Home', {
-            updateReviews: 3,
-        });
-        this.props.navigation.goBack()
+            await AsyncStorage.removeItem('companyId:' + companyId);
+
+            this.props.navigation.state.params.onGoBack();
+            this.props.navigation.navigate('Home', {
+                updateReviews: 3,
+            });
+            this.props.navigation.goBack()
+        }
+        else {
+            AsyncStorage.setItem('resultCheckList:' + reviewId, JSON.stringify(value));
+            ToastAndroid.show('Нет доступа к сети, проверка не отправлена', ToastAndroid.SHORT);
+            // this.props.navigation.state.params.onGoBack();
+            // this.props.navigation.navigate('Home', {
+            //     updateReviews: 3,
+            // });
+
+            this.props.navigation.goBack()
+            // this.props.navigation.navigate('Home', {
+            //     updateReviews: 3,
+            // });
+        }
     }
 
     _keyExtractor = (item, index) => item.id.toString();
@@ -183,6 +269,7 @@ export default class CheckListItems extends React.Component {
             />
         );
     };
+
 
 
     _renderItem = ({item}) => (
@@ -239,7 +326,7 @@ export default class CheckListItems extends React.Component {
                         }}
                     />
                     <View style={{margin: 50}}>
-                        <Button onPress={value => this.sendCheckListAPI(value)} title="Отправить"/>
+                        <Button onPress={() => this.sendCheckListAPI()} title="Отправить"/>
                     </View>
                 </ScrollView>
             );

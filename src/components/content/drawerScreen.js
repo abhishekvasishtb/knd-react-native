@@ -6,7 +6,7 @@ import {
     TextInput,
     Button,
     Platform,
-    AsyncStorage, LayoutAnimation,
+    AsyncStorage, LayoutAnimation, NetInfo, ToastAndroid, UIManager,
 } from 'react-native';
 // import { List, ListItem} from 'react-native-elements';
 
@@ -27,6 +27,29 @@ import CheckListItemScreen from "./checkListItems";
 import CheckListResultScreen from "./checkListResults.js";
 import LogOutScreen from "../login/logout.js";
 
+import { createStore, applyMiddleware } from 'redux';
+import { Provider, connect } from 'react-redux';
+import { apiMiddleware, reducer } from '../../redux/actions';
+import AppConstants from "../../constants/AppConstants";
+
+import axios from 'axios';
+import axiosMiddleware from 'redux-axios-middleware';
+import {setReviewResult, setReviewStatus} from "../../lib/Networking";
+import base64 from "../../lib/Base64";
+
+
+const client = axios.create({
+    baseURL: AppConstants.BASE_URL,
+    responseType: 'json'
+});
+
+const store = createStore(reducer, {}, applyMiddleware(axiosMiddleware(client)));
+
+// Fetch movie data
+// store.dispatch({type: 'GET_MOVIE_DATA'});
+
+
+
 let GLOBAL_TINT_COLOR = "black";
 
 if( Platform.OS === 'android' ){
@@ -35,6 +58,7 @@ if( Platform.OS === 'android' ){
 else {
     GLOBAL_TINT_COLOR = "black";
 }
+
 
 const PlannedReviewStack = createStackNavigator({
         Home: {
@@ -129,10 +153,123 @@ const DrawerExample = createDrawerNavigator(
 );
 
 
-export default DrawerExample;
 
+export default  DrawerExample;
+// export default
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            buttonText : 'Click Here To Expand'
 
+        };
+        this.sendReviews = this.sendReviews.bind(this);
+    }
 
+    setReviewStatus(reviewId, status) {
+        let username = 'admin';
+        let password = 'admin';
+        console.log('jkfhdsafjkhasfjkhasjklfsdkj');
+        // let headers = new Headers();
+        // headers.append('Authorization', 'Basic ' + base64(username + ":" + password));
+        return fetch(AppConstants.BASE_URL+'/api/add/reviewResult?reviewId='+reviewId, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Basic ' + base64.btoa((username + ":" + password)),
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: status
+            }),
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log('this from this');
+                return responseJson;
+            })
+            .catch((error) => {
+                console.log('error from this');
+                console.error(error);
+            });
+    }
+
+    async sendReviews(isConnected) {
+        // let isConnected = await checkConnectionAsync();
+        if (isConnected) {
+            let results = await AsyncStorage.getAllKeys();
+            // .then(results => {
+            let results2 = results.filter((key, value)=> key.includes('resultCheckList:'));
+            console.log(results2);
+            for (i=0;i<results2.length;i++) {
+                let reviewId = results2[i].split(':')[1];
+                let checkList = await AsyncStorage.getItem(results2[i]);
+                // .then(checkList => {
+                console.log('I am ee 123' + reviewId+ checkList);
+                // this.setReviewResult(reviewId, checkList);
+                setTimeout(function() {
+                    setReviewResult(reviewId, "done");
+                    },
+                    3000
+                )
+                // });
+            }
+            // this.setState({
+            //     isLoading:false
+            // });
+    // render() {
+    //     return (
+    //         <Provider store={store}>
+    //             <View style={styles.container}>
+    //                 <DrawerExample />
+    //             </View>
+    //         </Provider>
+    //     );
+    // }
+            // this.getReviews();
+            ToastAndroid.show('Проверки отправлены', ToastAndroid.SHORT);
+            // });
+            await AsyncStorage.multiRemove(results2);
+
+            // NetInfo.isConnected.removeEventListener(
+            //     'connectionChange',
+            //     this.sendReviews
+            // );
+        }
+    }
+
+    componentDidMount() {
+        console.log('MOUNTED FROM DRAWER');
+
+        // NetInfo.isConnected.addEventListener(
+        //     'connectionChange',
+        //     this.sendReviews
+        // );
+    }
+
+    componentWillUnmount() {
+        console.log('UNOUNTED FROM DRAWER');
+        // NetInfo.isConnected.removeEventListener(
+        //     'connectionChange',
+        //     this.sendReviews
+        // );
+    }
+    // render() {
+    //     return (
+    //         <Provider store={store}>
+    //             <View style={styles.container}>
+    //                 <DrawerExample />
+    //             </View>
+    //         </Provider>
+    //     );
+    // }
+
+    render() {
+        return (
+                    <DrawerExample />
+        );
+    }
+}
 
 const styles = StyleSheet.create({
     container: {
